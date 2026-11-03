@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Task Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+    
+</head>
+
+<body>
+    <!-- =====================================================
+         LOGIN SCREEN
+    ====================================================== -->
+
+    <section class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-brand">
+                <span class="brand-mark">✓</span>
+
+                <h1>TaskFlow</h1>
+
+                <p>Sign in to manage your tasks.</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <label>
+                    Username
+
+                    <input
+                        type="text"
+                        id="loginUsername"
+                        placeholder="Enter your username"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Password
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </label>
+
+                <div
+                    id="loginError"
+                    class="login-error"
+                ></div>
+
+                <button type="submit">
+                    Login
+                </button>
+
+                <button type="button" class="auth-switch" id="showSignupButton">
+                    Don't have an account? Sign up
+                </button>
+            </form>
+
+            <form id="signupForm" class="login-form hidden">
+                <label>
+                    Username
+
+                    <input
+                        type="text"
+                        id="signupUsername"
+                        placeholder="Choose a username"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Password
+
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        placeholder="Create a password"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Confirm password
+
+                    <input
+                        type="password"
+                        id="signupPasswordConfirm"
+                        placeholder="Enter your password again"
+                        required
+                    >
+                </label>
+
+                <div id="signupError" class="login-error"></div>
+
+                <button type="submit">
+                    Create account
+                </button>
+
+                <button type="button" class="auth-switch" id="showLoginButton">
+                    Already have an account? Login
+                </button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         DASHBOARD
+    ====================================================== -->
+
+    <div class="app-shell hidden" id="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-mark">✓</span>
+                <span>TaskFlow</span>
+            </div>
+
+            <nav>
+                <a class="nav-item active" href="#">
+                    <span>▦</span>
+                    Overview
+                </a>
+
+                <a class="nav-item" href="#tasks">
+                    <span>✓</span>
+                    My Tasks
+                </a>
+
+                <a class="nav-item" href="#employees">
+                    <span>♙</span>
+                    Team
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="help-card">
+                    <strong>Need a hand?</strong>
+
+                    <p>Stay on top of your team's work.</p>
+
+                    <button id="helpButton">
+                        Learn more →
+                    </button>
+                </div>
+
+                <div class="user">
+                    <div class="avatar" id="userAvatar">
+                        US
+                    </div>
+
+                    <div>
+                        <b id="sidebarUsername">
+                            User
+                        </b>
+
+                        <small id="sidebarRole">
+                            Employee
+                        </small>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="logout-button"
+                        id="logoutButton"
+                        title="Logout"
+                    >
+                        ↪
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="crumb">
+                    Workspace <span>/</span> Overview
+                </div>
+
+                <div class="top-actions">
+                    <button class="icon-button">
+                        ⌕
+                    </button>
+
+                    <button class="icon-button">
+                        ♧
+                        <i></i>
+                    </button>
+
+                    <div
+                        class="mini-avatar"
+                        id="topAvatar"
+                    >
+                        US
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- Page Content -->
+            <section class="content">
+                <!-- Welcome Section -->
+                <div class="welcome">
+                    <div>
+                        <p class="eyebrow">
+                            TASK MANAGEMENT
+                        </p>
+
+                        <h1>
+                            Good morning,
+                            <span id="welcomeUsername">
+                                User
+                            </span>
+                            <span>✦</span>
+                        </h1>
+
+                        <p class="subheading">
+                            Here's what's happening with your team's tasks today.
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary"
+                        id="newTaskButton"
+                    >
+                        ＋ New task
+                    </button>
+                </div>
+
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <article class="stat-card">
+                        <div class="stat-icon blue">
+                            ▤
+                        </div>
+
+                        <div>
+                            <small>Total tasks</small>
+
+                            <strong id="totalStat">
+                                0
+                            </strong>
+
+                            <em id="totalChange">
+                                Across your workspace
+                            </em>
+                        </div>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-icon amber">
+                            ◷
+                        </div>
+
+                        <div>
+                            <small>In progress</small>
+
+                            <strong id="progressStat">
+                                0
+                            </strong>
+
+                            <em>
+                                Currently active
+                            </em>
+                        </div>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-icon green">
+                            ✓
+                        </div>
+
+                        <div>
+                            <small>Completed</small>
+
+                            <strong id="completedStat">
+                                0
+                            </strong>
+
+                            <em id="completionRate">
+                                0% completion rate
+                            </em>
+                        </div>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-icon purple">
+                            ♧
+                        </div>
+
+                        <div>
+                            <small>Team members</small>
+
+                            <strong id="membersStat">
+                                0
+                            </strong>
+
+                            <em>
+                                Active employees
+                            </em>
+                        </div>
+                    </article>
+                </div>
+
+
+                <!-- Team Members -->
+                <div
+                    class="section-heading"
+                    id="employees"
+                >
+                    <div>
+                        <h2>
+                            Team members
+                        </h2>
+
+                        <p>
+                            Employees available for task assignment.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="team-grid"
+                    id="employeeList"
+                ></div>
+
+
+                <!-- Tasks Overview -->
+                <div
+                    class="section-heading"
+                    id="tasks"
+                >
+                    <div>
+                        <h2>
+                            Tasks overview
+                        </h2>
+
+                        <p>
+                            Manage and track your team's work.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="text-button"
+                        id="viewAll"
+                        title="Clear filters and show all tasks"
+                    >
+                        View all tasks →
+                    </button>
+                </div>
+
+
+                <!-- Task Toolbar -->
+                <div class="toolbar">
+                    <div class="search">
+                        <span>⌕</span>
+
+                        <input
+                            id="searchInput"
+                            placeholder="Search tasks..."
+                        >
+                    </div>
+
+                    <select id="statusFilter">
+                        <option value="">
+                            All statuses
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="In Progress">
+                            In Progress
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+                    </select>
+
+                    <select id="employeeFilter">
+                        <option value="">
+                            All assignees
+                        </option>
+                    </select>
+                </div>
+
+
+                <!-- Tasks Table -->
+                <div class="table-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TASK</th>
+                                <th>ASSIGNEE</th>
+                                <th>STATUS</th>
+                                <th>PRIORITY</th>
+                                <th>DUE DATE</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="taskRows"></tbody>
+                    </table>
+
+                    <div
+                        class="empty hidden"
+                        id="emptyState"
+                    >
+                        No tasks match your filters.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <!-- =====================================================
+         TASK MODAL
+    ====================================================== -->
+
+    <div
+        class="modal hidden"
+        id="taskModal"
+    >
+        <div class="modal-card">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div>
+                    <p class="eyebrow">
+                        TASK DETAILS
+                    </p>
+
+                    <h2 id="modalTitle">
+                        Create new task
+                    </h2>
+                </div>
+
+                <button
+                    class="close"
+                    id="closeModal"
+                >
+                    ×
+                </button>
+            </div>
+
+
+            <!-- Task Form -->
+            <form id="taskForm">
+                <input
+                    type="hidden"
+                    id="taskId"
+                >
+
+                <label>
+                    Title
+
+                    <input
+                        id="title"
+                        required
+                        maxlength="120"
+                        placeholder="What to be done?"
+                    >
+                </label>
+
+                <label>
+                    Description
+
+                    <textarea
+                        id="description"
+                        rows="3"
+                        placeholder="Add some context..."
+                    ></textarea>
+                </label>
+
+
+                <!-- Assignee & Due Date -->
+                <div class="form-row">
+                    <label>
+                        Assignee
+
+                        <select id="employeeId"></select>
+                    </label>
+
+                    <label>
+                        Due date
+
+                        <input
+                            type="date"
+                            id="dueDate"
+                        >
+                    </label>
+                </div>
+
+
+                <!-- Status & Priority -->
+                <div class="form-row">
+                    <label>
+                        Status
+
+                        <select id="status">
+                            <option>
+                                Pending
+                            </option>
+
+                            <option>
+                                In Progress
+                            </option>
+
+                            <option>
+                                Completed
+                            </option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Priority
+
+                        <select id="priority">
+                            <option>
+                                Low
+                            </option>
+
+                            <option selected>
+                                Medium
+                            </option>
+
+                            <option>
+                                High
+                            </option>
+                        </select>
+                    </label>
+                </div>
+
+
+                <!-- Modal Actions -->
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="secondary"
+                        id="cancelButton"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        class="primary"
+                        type="submit"
+                    >
+                        Save task
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Toast Notification -->
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

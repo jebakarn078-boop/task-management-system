@@ -1,0 +1,21 @@
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+
+# Database files
+*.db
+*.db.bak
+*.sqlite
+
+# Backup files
+*.bak
+
+get-pip.py
